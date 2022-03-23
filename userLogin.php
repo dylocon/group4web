@@ -6,28 +6,36 @@ $errorappID = $invalidMesg = "";
 
 $nameErr = $pwderr = $invalidMesg = "";
 
+function verifyUsers () {
+if (!isset($_POST['appID']) and !isset($_POST['lastname']) and !isset($_POST['postcode'])) {
+    echo "Error";  // <-- return null;  
+}
 
+$db = new SQLite3('/xampp/Data/StudentModule.db');
+$stmt = $db->prepare('SELECT UserName, Password FROM User WHERE UserName = :username');
+$stmt->bindParam(':username', $_POST['username'], SQLITE3_TEXT);
 
+$result = $stmt->execute();
+
+$rows_array = [];
+while ($row=$result->fetchArray())
+{
+    $rows_array[]=$row;
+}
+return $rows_array;
+}
 if (isset($_POST['submit'])) {
-
-
-    if($_POST['appID'] != null && $_POST['lastname'] !=null && $_POST['postcode'])
+    if($_POST['username'] != null && $_POST['password'] !=null)
     {
         $array_user = verifyUsers(); 
-        if ($array_user != null) {
-
-      
-            if ($array_user[0]['appID']=="$appID")
+        if ($array_user != null){
+            if ($array_user[0][0]==$_POST['username'] && $array_user[0][1]==$_POST['password'])
             {
                 session_start();
-                $_SESSION['appID'] = $array_user[0][$appID];
-                $_SESSION['lastname'] = $array_user[0]['lastname'];
-                $_SESSION['postcode'] = $array_user[0]['postcode'];
-               
-                header("Location: viewUser.php"); 
+                $_SESSION['username'] = $array_user[0][0];
+                header("Location: loginLandingPage.php"); 
                 exit();
             }
- 
         }
         else{
             echo "Invalid credentials!";
@@ -64,13 +72,13 @@ if (isset($_POST['submit'])) {
 <div style="text-align: center">
     <div class="form-floating">
       <label for="floatingInput"class="loginFont"style="padding-right:100px">Username</label>
-      <input type="text" placeholder="Username"class="inputFields" id="appID" name="appID" >
+      <input type="text" placeholder="Username"class="inputFields" id="username" name="username" >
       <span class="text-danger"><?php echo $errorappID; ?></span>
     </div>
 <br>
     <div class="form-floating">
       <label for="floatingInput"class="loginFont"style="padding-right:108px">Password</label>
-      <input type="password" placeholder="Password" class="inputFields"  id="lastname" name="lastname" >
+      <input type="password" placeholder="Password" class="inputFields"  id="password" name="password" >
       <span class="text-danger"><?php echo $errorappID; ?></span>
     </div>
 

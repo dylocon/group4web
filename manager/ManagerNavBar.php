@@ -30,13 +30,10 @@
 								</a>
 							</li>
 							<li class="nav-item navFont">
-								<a class="nav-link defaultFont" href="/groupfour-main/register.php">Register for Interest</a>
+								<a class="nav-link defaultFont" href="/groupfour-main/register.php">View Reviews</a>
 							</li>
 							<li class="nav-item navFont">
-								<a class="nav-link  defaultFont" href="/groupfour-main/userLogin.php">User Login</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link defaultFont" href="/groupfour-main/Admin/LoginAdmin.php">Admin Login</a>
+								<a class="nav-link  defaultFont" href="/groupfour-main/userLogin.php">Create Reviews</a>
 							</li>
 
 						</ul>
