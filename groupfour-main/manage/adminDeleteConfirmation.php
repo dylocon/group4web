@@ -17,7 +17,7 @@ else if($rows_array[0][0] == "Manager"){
     include('/xampp/htdocs/groupfour-main/manager/ManagerNavBar.php');
 }
 else{
-    include('NavBar.php');
+    include('/xampp/htdocs/groupfour-main/user/UserNavBar.php');
 }
 ?>
 
@@ -41,7 +41,7 @@ else{
   <form method="post">
     <h1 class="h3 mb-3 fw-normal" style="text-align: center">ACTEMIUM</h1>
 <div style="text-align: center">
-    <h1>You have successfully Created a Review.</h1>
+    <h1>You have successfully Delete the Account.</h1>
 </div>
 
   </form>

@@ -36,6 +36,7 @@ else{
     
     <link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   </head>
+<?php echo $_SESSION['engineerID'];?>
 <main class="form-signin col-md-2 center">
 <link rel="stylesheet" href="/groupfour-main/site.css" />
   <form method="post">

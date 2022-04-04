@@ -5,6 +5,7 @@ $stmt = $db->prepare('SELECT Role, ID FROM User WHERE UserName = :username ');
 $stmt->bindParam(':username', $_SESSION['username'], SQLITE3_TEXT);
 $result = $stmt->execute();
 $rows_array = [];
+$_SESSION['questionsID'] = 1;
 while ($row=$result->fetchArray())
 {
     $rows_array[]=$row;
@@ -12,9 +13,11 @@ while ($row=$result->fetchArray())
 if($rows_array[0][0] == "Admin")
 {
     include('/xampp/htdocs/groupfour-main/admin/AdminNavBar.php');
+    $_SESSION['adminID'] = $rows_array[0][1];
 }
 else if($rows_array[0][0] == "Manager"){
     include('/xampp/htdocs/groupfour-main/manager/ManagerNavBar.php');
+    $_SESSION['managerID'] = $rows_array[0][1];
 }
 else{
     include('/xampp/htdocs/groupfour-main/user/UserNavBar.php');

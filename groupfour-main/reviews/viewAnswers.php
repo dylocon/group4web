@@ -1,14 +1,11 @@
 <?php
 include('/xampp/htdocs/groupfour-main/checkStatus.php');
-include_ONCE("UserAnswerSQL.php");
+include_once('deleteReview.php');
 $db = new SQLite3('/xampp/Data/StudentModule.db');
 $stmt = $db->prepare('SELECT Role FROM User WHERE UserName = :username ');
 $stmt->bindParam(':username', $_SESSION['username'], SQLITE3_TEXT);
 $result = $stmt->execute();
 $rows_array = [];
-
-
-
 while ($row=$result->fetchArray())
 {
     $rows_array[]=$row;
@@ -25,34 +22,31 @@ else{
 }
 
 if (isset($_POST['submit'])) {
-  $answerReview = AnswerReviewFunc();
-  header('Location: userAnswerConfirmation.php?createUser='.$answerReview); 
+  $deleteReview = DeleteReviewFunc();
+  header('Location: viewReviews.php?deleteReview='.$deleteReview); 
   exit();
 }
-
-
 ?>
 
+<?php
+$dbA = new SQLite3('/xampp/Data/StudentModule.db');
+$stmtA = $dbA->prepare("SELECT A1, A2, A3, A4, A5, A6, 
+A7, A8, QuestionID, A9 FROM ReviewsA WHERE AnswerID = :answers");
+$stmtA->bindParam(':answers', $_GET['answersID'], SQLITE3_INTEGER);
+$resultA = $stmtA->execute();
+$rows_arrayA = [];
+while ($rowA=$resultA->fetchArray())
+{
+    $rows_arrayA[]=$rowA;
+};
+$_SESSION['questID'] = $rows_arrayA[0][8];
+$questionID = $_SESSION['questID'];
+?>
 
 <?php
-$dbID = new SQLite3('/xampp/Data/StudentModule.db');
-$stmtID = $dbID->prepare("SELECT QuestionID FROM ReviewsQ WHERE ReviewID = :revID ");
-$stmtID->bindParam(':revID', $_GET['revieID'], SQLITE3_TEXT);
-$resultID = $stmtID->execute();
-$rows_arrayID = [];
-while ($rowID=$resultID->fetchArray())
-{
-    $rows_arrayID[]=$rowID;
-}
-
-
-$_SESSION['questionAnswerID'] = $rows_arrayID[0][0];
-$reviewID = $_SESSION['reviewID'];
-$userID = $_SESSION['userID'];
 $dbQ = new SQLite3('/xampp/Data/StudentModule.db');
 $stmtQ = $db->prepare("SELECT Q1, Q2, Q3, Q4, Q5, Q6, 
-Q7, Q8 FROM Appraisals WHERE QuestionID = :qID ");
-$stmtQ->bindParam(':qID', $rows_arrayID[0][0], SQLITE3_TEXT);
+Q7, Q8 FROM Appraisals WHERE QuestionID = $questionID ");
 $resultQ = $stmtQ->execute();
 $rows_arrayQ = [];
 while ($rowQ=$resultQ->fetchArray())
@@ -60,6 +54,9 @@ while ($rowQ=$resultQ->fetchArray())
     $rows_arrayQ[]=$rowQ;
 }
 ?>
+
+
+
 
 
 <!doctype html>
@@ -88,32 +85,22 @@ while ($rowQ=$resultQ->fetchArray())
           <th>Questions</th>
           <th>Answers</th>
           </tr>
-            <?php for ($x = 1; $x < 9; $x+=1) {?>
+            <?php for ($x = 0; $x < 8; $x+=1) {?>
                 <tr style="border: solid 2px black">
-                  <?php if($rows_arrayQ[0][($x-1)] != null){ ?>
-                    <?php if($x < 6){?>
-                    <td> <label for="floatingInput"class="questionsFont reviewLabel"><?php echo $rows_arrayQ[0][($x-1)]." "?></label> </td>
-                    <td style="width:70% "> <textarea maxlength="150"rows="4" cols="50"  placeholder="Answer ..."class="inputFields reviewInput" id="answer" name=<?php echo "answer".$x?>></textarea> </td>
-                    <?php } else {?>
-                      <td> <label for="floatingInput"class="questionsFont reviewLabel"><?php echo $rows_arrayQ[0][($x-1)]." "?></label> </td>
-                      <td style="width:50%; "> 
-                        <input style = "margin: 25px" name = <?php echo "radio".$x?> type="radio" value="1">1</input>
-                        <input style = "margin: 25px" name = <?php echo "radio".$x?> type="radio" value="2">2</input>
-                        <input style = "margin: 25px" name = <?php echo "radio".$x?> type="radio" value="3">3</input>
-                        <input style = "margin: 25px" name = <?php echo "radio".$x?> type="radio" value="4">4</input>
-                        <input style = "margin: 25px" name = <?php echo "radio".$x?> type="radio" value="5">5</input>
-                      </td>
-                    <?php } ?>
+                    <?php if($rows_arrayQ[0][$x] != null){ ?>
+                    <td style="text-align: left;border: solid 2px black"><?php echo $rows_arrayQ[0][$x]." "?> </td>
+                    <td style="text-align: left;"><?php echo $rows_arrayA[0][$x]." "?></td>
                   <?php } ?>
                   </tr>
             <?php } ?>
-            <td> <label for="floatingInput"class="questionsFont reviewLabel">Future Wishes / Training Requests </label> </td>
-              <td style="width:70% "> <textarea maxlength="150"rows="4" cols="50"  placeholder="Answer ..."class="inputFields reviewInput" id="answer" name=<?php echo "answer".$x?>></textarea> </td>
+            <td style="text-align: left;"class="">Future Wishes / Training Requests </label> </td>
+            <td style="text-align: left;border: solid 2px black"><?php echo $rows_arrayA[0][9]?></td>
             </table>
-            <button class="w-50 btn btn-lg btn-primary" style="align: center;margin-top:20px" type="submit" name="submit" value="User Login">Publish the Review</button>
           </div>
+          <button class="w-10 btn btn-lg btn-primary" style="margin-top:10px" type="submit" name="submit" value="Delete Appraisal">Delete </button>
         </form>
     </main>
   </div>
+  
 
 <?php require("/xampp/htdocs/groupfour-main/Footer.php");?>

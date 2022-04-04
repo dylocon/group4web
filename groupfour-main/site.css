@@ -85,11 +85,27 @@ body {
   color: #004C89;
   font-family: "Source Sans Pro", Arial, sans-serif;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 25px;
+  
 }
-.center {
+.center {       
   margin: 0;
-  position: absolute;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, 0%);
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: white;
+  padding: 10px;
+  box-shadow:  4px 4px 30px black;
+  max-width: 40%;
+  max-height: 100%;
+ }
+ .bottom {
+  margin: 0;
+  position: relative;
   top: 50%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
@@ -139,3 +155,170 @@ body {
 .reviewInput{
   display: inline-block;
 }
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+* {
+  box-sizing: border-box;
+}
+
+.heading {
+  font-size: 25px;
+  margin-right: 25px;
+}
+
+.fa {
+  font-size: 25px;
+}
+
+.checked {
+  color: orange;
+}
+
+/* Three column layout */
+.side {
+  float: left;
+  width: 12%;
+  margin-top: 10px;
+}
+
+.middle {
+  float: left;
+  width: 70%;
+  margin-top: 10px;
+}
+
+/* Place text to the right */
+.right {
+  text-align: right;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* The bar container */
+.bar-container {
+  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  color: white;
+  border: solid black 2px;
+}
+
+/* Individual bars */
+.bar-5 {width: 60%; height: 18px; background-color: #04AA6D;}
+.bar-4 {width: 30%; height: 18px; background-color: #2196F3;}
+.bar-3 {width: 10%; height: 18px; background-color: #00bcd4;}
+.bar-2 {width: 4%; height: 18px; background-color: #ff9800;}
+.bar-1 {width: 15%; height: 18px; background-color: #f44336;}
+
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+  .side, .middle {
+    width: 100%;
+  }
+  /* Hide the right column on small screens */
+  .right {
+    display: none;
+  }
+}
+
+
+
+.tableHead{
+  background-color: #004C89;
+  color: #f1f1f1;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+#videoBG {
+  position: fixed;
+  z-index: -1;
+  width: 100%;
+  height: auto;
+}
+.objectivesCanvas {
+  margin: 0;
+  position: relative;
+  top: 50%;
+  left: 30%;
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: white;
+  padding: 10px;
+  box-shadow:  4px 4px 30px black;
+  max-width: 40%;
+  max-height: 70%;
+  margin-bottom: 120px;
+}
+.progressCanvas {
+  margin: 0;
+  position: relative;
+  top: 50%;
+  left: 30%;
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: white;
+  padding: 10px;
+  box-shadow:  4px 4px 30px black;
+  max-width: 40%;
+  max-height: 70%;
+  
+}
+table {
+  table-layout: fixed;
+  border-collapse: separate;
+  width: 100%;   
+}
+th,td {
+  overflow: auto;
+  word-wrap: break-word;
+  
+}
+th{
+  background-color: #004C89;
+  color: #f1f1f1;
+}
+
+.appraisalAnswered {       
+  margin: 0;
+  position: relative;
+  top: 50%;
+  left: 25%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, 0%);
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: white;
+  padding: 10px;
+  box-shadow:  4px 4px 30px black;
+  max-width: 40%;
+  max-height: 100%;
+ }
+ .appraisalPending {       
+  margin: 0;
+  position: absolute;
+  top: 10%;
+  left: 75%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, 0%);
+  border: 2px solid black;
+  border-radius: 25px;
+  background-color: white;
+  padding: 10px;
+  box-shadow:  4px 4px 30px black;
+  max-width: 40%;
+  max-height: 100%;
+ }

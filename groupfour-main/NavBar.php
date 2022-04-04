@@ -35,9 +35,6 @@
 							<li class="nav-item navFont">
 								<a class="nav-link  defaultFont" href="/groupfour-main/userLogin.php">User Login</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link defaultFont" href="/groupfour-main/Admin/LoginAdmin.php">Admin Login</a>
-							</li>
 
 						</ul>
 					</div>

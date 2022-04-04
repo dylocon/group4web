@@ -37,9 +37,10 @@ if (isset($_POST['submit'])) {
                 exit();
             }
         }
-        else{
-            echo "Invalid credentials!";
         }
+        else{
+          $nameErr = "Please enter your Username correctly.";
+          $pwderr = "Please enter your Password correctly.";
     }
 }
 
@@ -73,13 +74,15 @@ if (isset($_POST['submit'])) {
     <div class="form-floating">
       <label for="floatingInput"class="loginFont"style="padding-right:100px">Username</label>
       <input type="text" placeholder="Username"class="inputFields" id="username" name="username" >
-      <span class="text-danger"><?php echo $errorappID; ?></span>
+      <br>
+      <span class="text-danger"><?php echo $nameErr; ?></span>
+      
     </div>
-<br>
     <div class="form-floating">
       <label for="floatingInput"class="loginFont"style="padding-right:108px">Password</label>
       <input type="password" placeholder="Password" class="inputFields"  id="password" name="password" >
-      <span class="text-danger"><?php echo $errorappID; ?></span>
+      <br>
+      <span class="text-danger"><?php echo $pwderr; ?></span>
     </div>
 
     <!-- <div class="checkbox mb-3">
