@@ -1,40 +1,55 @@
 
 <?php 
-include("NavBar.php");
-include_ONCE("createUserSQL.php");
+include('/xampp/htdocs/groupfour-main/checkStatus.php');
+include_once('adminUpdateSQL.php');
+$db = new SQLite3('/xampp/Data/ActemiumDB.db');
+$stmt = $db->prepare('SELECT Role FROM User WHERE UserName = :username ');
+$stmt->bindParam(':username', $_SESSION['username'], SQLITE3_TEXT);
+$result = $stmt->execute();
+$rows_array = [];
+while ($row=$result->fetchArray())
+{
+    $rows_array[]=$row;
+}
+if($rows_array[0][0] == "Admin")
+{
+    include('/xampp/htdocs/groupfour-main/admin/AdminNavBar.php');
+}
+else if($rows_array[0][0] == "Manager"){
+    include('/xampp/htdocs/groupfour-main/manager/ManagerNavBar.php');
+}
+else{
+    include('/xampp/htdocs/groupfour-main/user/UserNavBar.php');
+}
+
 
 $errorfname = $errorlname = $errorpwd = $errorrole ='';
 $allFields = "yes";
-
-if (isset($_POST['submit'])){
-    if ($_POST['firstname']==""){
-        $errorfname = "First name is mandatory";
-        $allFields = "no";
-    }
-    if ($_POST['surname']==""){
-        $errorlname = "Last name is mandatory";
-        $allFields = "no";
-    }
-    if ($_POST['password']==""){
-        $errorpwd = "Password is mandatory";
-        $allFields = "no";
-    }
-    if ($_POST['role']==""){
-        $errorrole = "Role selection is mandatory";
-        $allFields = "no";
-    }
-    if ($_POST['type']==""){
-      $errorrole = "Type selection is mandatory";
-      $allFields = "no";
-  }
-
-    if($allFields == "yes")
-    {
-        $createUser = CreateAnAccountFunc();
-        header('Location: registerConfirmation.php?createUser='.$createUser);
-    }
+if (isset($_POST['update'])) {
+  if ($_POST['firstname']==""){
+    $errorfname = "First name is mandatory";
+    $allFields = "no";
+}
+if ($_POST['surname']==""){
+    $errorlname = "Last name is mandatory";
+    $allFields = "no";
+}
+if ($_POST['role']==""){
+    $errorrole = "Role selection is mandatory";
+    $allFields = "no";
+}
+if ($_POST['type']==""){
+  $errorrole = "Type selection is mandatory";
+  $allFields = "no";
 }
 
+if($allFields == "yes")
+{
+  $_SESSION['userID'] = $_GET['userID'];
+  $updateUser = updateUser();
+  header("Location: adminUpdateConfirmation.php?createUser='.$updateUser"); 
+}
+}
 
 ?>
 
@@ -57,7 +72,7 @@ if (isset($_POST['submit'])){
 
 
     
-<main class="form-signin col-md-2 center">
+  <main class="form-signin col-md-2 center">
 <link rel="stylesheet" href="/groupfour-main/site.css" />
   <form method="post">
     <h1 class="h3 mb-3 fw-normal" style="text-align: center">ACTEMIUM</h1>
@@ -77,15 +92,10 @@ if (isset($_POST['submit'])){
     <span class="text-danger"><?php echo $errorlname; ?></span>
 <br>
     <div class="form-floating">
-      <label for="floatingInput"class="loginFont"style="padding-right:108px">Password</label>
-      <input type="password" placeholder="password" class="inputFields"  id="password" name="password" >
-      
-    </div>
-    <span class="text-danger"><?php echo $errorpwd; ?></span>
-<br>
-    <div class="form-floating">
       <label for="floatingInput"class="loginFont"style="padding-right:172px">Role</label>
       <select class="inputFields reviewInput" name="role" id="role">
+        <option value="Admin">Admin</option>
+        <option value="Manager">Manager</option>
         <option value="User">User</option>
       </select>
     </div>
@@ -101,14 +111,14 @@ if (isset($_POST['submit'])){
     </div>
     <span class="text-danger"><?php echo $errorrole; ?></span>
 
+    </div>
     <br>
-    <button class="w-50 btn btn-lg btn-primary" type="submit" name="submit" value="User Login">Register</button>
-
+    <button style="margin-left: 180px" class="w-50 btn btn-lg btn-primary" type="submit" name="update" value="User Login">Update</button>
     
 
-</div>
+
 
   </form>
 </main>
 
-<?php require("Footer.php");?>
+<?php require('/xampp/htdocs/groupfour-main/Footer.php');?>

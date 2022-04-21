@@ -25,17 +25,22 @@
 					<div class="defaultFont navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 						<ul class="navbar-nav flex-grow-1">
 							<li class="nav-item navFont">
-								<a class="nav-link defaultFont" href="/myproject/">
+								<a class="nav-link defaultFont" href="">
 									<img border="0" alt="User Icon" style = "padding-bottom:12px"src="/groupfour-main/Icons/actemium-logo.jpg" width="220" height="50">
 								</a>
 							</li>
 							<li class="nav-item navFont">
-								<a class="nav-link defaultFont" href="/groupfour-main/register.php">View Reviews</a>
+								<a class="nav-link defaultFont" href="/groupfour-main/reviews/viewReviews.php">View Appraisals</a>
 							</li>
 							<li class="nav-item navFont">
-								<a class="nav-link  defaultFont" href="/groupfour-main/userLogin.php">Create Reviews</a>
+								<a class="nav-link  defaultFont" href="/groupfour-main/reviews/createReviewsPage.php">Update Appraisals</a>
 							</li>
-
+							<li class="nav-item navFont">
+								<a class="nav-link  defaultFont" href="/groupfour-main/admin/adminUsers.php">Appraise User</a>
+							</li>
+							<li class="nav-item" style="float: right">
+								<a class="nav-link defaultFont"  href="/groupfour-main/logout.php">Logout</a>
+							</li>
 						</ul>
 					</div>
 				</div>

@@ -1,11 +1,14 @@
 <?php
 include('/xampp/htdocs/groupfour-main/checkStatus.php');
 include_ONCE("UserAnswerSQL.php");
-$db = new SQLite3('/xampp/Data/StudentModule.db');
+$db = new SQLite3('/xampp/Data/ActemiumDB.db');
 $stmt = $db->prepare('SELECT Role FROM User WHERE UserName = :username ');
 $stmt->bindParam(':username', $_SESSION['username'], SQLITE3_TEXT);
 $result = $stmt->execute();
 $rows_array = [];
+
+
+
 while ($row=$result->fetchArray())
 {
     $rows_array[]=$row;
@@ -32,18 +35,30 @@ if (isset($_POST['submit'])) {
 
 
 <?php
+$dbID = new SQLite3('/xampp/Data/ActemiumDB.db');
+$stmtID = $dbID->prepare("SELECT QuestionID FROM ReviewsQ WHERE ReviewID = :revID ");
+$stmtID->bindParam(':revID', $_GET['revieID'], SQLITE3_TEXT);
+$resultID = $stmtID->execute();
+$rows_arrayID = [];
+while ($rowID=$resultID->fetchArray())
+{
+    $rows_arrayID[]=$rowID;
+}
+
+
+$_SESSION['questionAnswerID'] = $rows_arrayID[0][0];
+$reviewID = $_SESSION['reviewID'];
 $userID = $_SESSION['userID'];
-$dbQ = new SQLite3('/xampp/Data/StudentModule.db');
-$stmtQ = $db->prepare("SELECT Question_1, Question_2, Question_3, Question_4, Question_5, Question_6, 
-Question_7, Question_8, Question_9, Question_10, Question_11, Question_12, AppraiserID, ReviewID FROM ReviewsQ WHERE AppraiseeID = $userID ");
+$dbQ = new SQLite3('/xampp/Data/ActemiumDB.db');
+$stmtQ = $db->prepare("SELECT Q1, Q2, Q3, Q4, Q5, Q6, 
+Q7, Q8 FROM Appraisals WHERE QuestionID = :qID ");
+$stmtQ->bindParam(':qID', $rows_arrayID[0][0], SQLITE3_TEXT);
 $resultQ = $stmtQ->execute();
 $rows_arrayQ = [];
 while ($rowQ=$resultQ->fetchArray())
 {
     $rows_arrayQ[]=$rowQ;
 }
-$_SESSION['appraiserID']= $rows_arrayQ[0][12] ;
-$_SESSION['reviewID']= $rows_arrayQ[0][13] ;
 ?>
 
 
@@ -73,15 +88,27 @@ $_SESSION['reviewID']= $rows_arrayQ[0][13] ;
           <th>Questions</th>
           <th>Answers</th>
           </tr>
-            <?php for ($x = 1; $x < 12; $x+=1) {?>
-              
+            <?php for ($x = 1; $x < 9; $x+=1) {?>
                 <tr style="border: solid 2px black">
-                  <?php if($rows_arrayQ[0][$x] != null){ ?>
-                    <td> <label for="floatingInput"class="questionsFont reviewLabel"><?php echo $rows_arrayQ[0][$x]." "?></label> </td>
-                    <td style="width:70% "> <textarea rows="4" cols="50"  placeholder="Answer ..."class="inputFields reviewInput" id="answer" name=<?php echo "answer".$x?>></textarea> </td>
+                  <?php if($rows_arrayQ[0][($x-1)] != null){ ?>
+                    <?php if($x < 6){?>
+                    <td> <label for="floatingInput"class="questionsFont reviewLabel"><?php echo $rows_arrayQ[0][($x-1)]." "?></label> </td>
+                    <td style="width:70% "> <textarea maxlength="150"rows="4" cols="50"  placeholder="Answer ..."class="inputFields reviewInput" id="answer" name=<?php echo "answer".$x?>></textarea> </td>
+                    <?php } else {?>
+                      <td> <label for="floatingInput"class="questionsFont reviewLabel"><?php echo $rows_arrayQ[0][($x-1)]." "?></label> </td>
+                      <td style="width:50%; "> 
+                        <input style = "margin: 25px" name = <?php echo "radio".$x?> type="radio" value="1">1</input>
+                        <input style = "margin: 25px" name = <?php echo "radio".$x?> type="radio" value="2">2</input>
+                        <input style = "margin: 25px" name = <?php echo "radio".$x?> type="radio" value="3">3</input>
+                        <input style = "margin: 25px" name = <?php echo "radio".$x?> type="radio" value="4">4</input>
+                        <input style = "margin: 25px" name = <?php echo "radio".$x?> type="radio" value="5">5</input>
+                      </td>
+                    <?php } ?>
                   <?php } ?>
                   </tr>
             <?php } ?>
+            <td> <label for="floatingInput"class="questionsFont reviewLabel">Future Wishes / Training Requests </label> </td>
+              <td style="width:70% "> <textarea maxlength="150"rows="4" cols="50"  placeholder="Answer ..."class="inputFields reviewInput" id="answer" name=<?php echo "answer".$x?>></textarea> </td>
             </table>
             <button class="w-50 btn btn-lg btn-primary" style="align: center;margin-top:20px" type="submit" name="submit" value="User Login">Publish the Review</button>
           </div>

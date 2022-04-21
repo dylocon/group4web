@@ -1,6 +1,6 @@
 <?php
 include('/xampp/htdocs/groupfour-main/checkStatus.php');
-$db = new SQLite3('/xampp/Data/StudentModule.db');
+$db = new SQLite3('/xampp/Data/ActemiumDB.db');
 $stmt = $db->prepare('SELECT Role FROM User WHERE UserName = :username ');
 $stmt->bindParam(':username', $_SESSION['username'], SQLITE3_TEXT);
 $result = $stmt->execute();

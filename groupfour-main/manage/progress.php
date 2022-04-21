@@ -20,23 +20,19 @@ else{
     include('/xampp/htdocs/groupfour-main/user/UserNavBar.php');
 }
 
-
-
-if (isset($_POST['submit'])) {
-  header("Location: userCreateObj.php");
+if (isset($_POST['submit'])){
+  header('Location: manageCreateObj.php?userID='.$_GET['userID']);
 }
+
+
+
+
+
+
+
+
+
 ?>
-
-
-
-
-
-
-
-
-
-
-
 
 <!doctype html>
 <html lang="en">
@@ -52,31 +48,70 @@ if (isset($_POST['submit'])) {
     
     <link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   </head>
+<div class="progressCanvas col-md-6" style = "margin-bottom: 100px;">
+  <main class="form-signin">
+<link rel="stylesheet" href="/groupfour-main/site.css" />
+  <form method="post">
+    <h1 class="h3 mb-3 fw-normal" style="text-align: center">ACTEMIUM</h1>
+    <h2 class="h3 mb-3 fw-normal" style="text-align: center">Appraisal Progress</h2>
+<div style="text-align: center">
+<hr style="border:3px solid #f1f1f1">
+<?php
+
+$db = new SQLite3('/xampp/Data/ActemiumDB.db');
+$stmt = $db->prepare('SELECT Number,AVGSCORE, AnswerID, AppraiseeID FROM ReviewsA WHERE AppraiseeID = :userID');
+$stmt->bindParam(':userID', $_GET['userID'], SQLITE3_TEXT);
+$result = $stmt->execute();
+$rows_array = [];
+$count = 0;
+while ($row=$result->fetchArray())
+{
+    $count += 1;
+    $rows_array[]=$row;
+}
+
+?>
+
+<div class="row" style="overflow: auto">
+<?php for($x = 0  ; $x < $count; $x+=1) {?>
+<?php 
+if($rows_array[$x][1] == 0){
+  $avgscorePercent = 0;
+}
+else{
+  $avgscorePercent = ($rows_array[$x][1] / 5) * 100;
+}
+
+?>
+  <div class="side" style="margin-left:10px">
+    <div><a href="/groupfour-main/reviews/viewAnswers.php?answersID=<?php echo $rows_array[$x][2]?>"> A <?php echo $x+1 ?></a></div>
+  </div>
+  <div class="middle">
+    <div class="bar-container">
+      <div style="width:<?php echo $avgscorePercent?>%; height: 18px; background-color: #2196F3;"></div> 
+    </div>
+  </div>
+  <div class="side right">
+    <div><?php echo $avgscorePercent."%"?></div>
+  </div>
+  <br>
+  <?php } ?>
+
+
+  
+
+
+  </form>
+</main>
+</div>
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<main class="form-signin col-md-2 center">
+<div class="objectivesCanvas col-md-6" style = "position: relative;">
+  <main class="form-signin">
   <link rel="stylesheet" href="/groupfour-main/site.css" />
   <link rel="stylesheet" href="/groupfour-main/buttonstyle.css" />
   <h1 class="h3 mb-3 fw-normal" style="text-align: center">ACTEMIUM</h1>
@@ -86,9 +121,9 @@ if (isset($_POST['submit'])) {
   <hr style="border:3px solid #f1f1f1">
   <table style="width: 100%; text-align: center;border: solid 2px black">
     <?php
-    $userID = $_SESSION['userID'];
+    $userID = $_GET['userID'];
     $db = new SQLite3('/xampp/Data/ActemiumDB.db');
-    $stmt = $db->prepare("SELECT objID,objName,Status FROM Objectives WHERE userID = $userID  ");
+    $stmt = $db->prepare("SELECT objID,objName,Status, Assigned FROM Objectives WHERE userID = $userID  ");
     $result = $stmt->execute();
     $rows_array = [];
     $count = 0;
@@ -103,31 +138,33 @@ if (isset($_POST['submit'])) {
       <th>Objective ID</th>
       <th>Objective Name</th>
       <th>Status</th>
+      <th>Assigned By</th>
     </tr>
 
     <?php $_SESSION['reviewID'] =  $rows_array[0][0]; ?>
     <?php for($x = 0  ; $x < $count; $x+=1){?>
     <tr>
       <td><?php echo $rows_array[$x][0]?></a></td>
-      <?php if($rows_array[$x][2] != "Complete"){?>
-      <td><a href="objectives.php?objID=<?php echo $rows_array[$x][0]?>"><strong><?php echo $rows_array[$x][1]?></strong></a></td>
-      <?php }else{ ?>
-        <td><strong><?php echo $rows_array[$x][1]?></strong></td>
-        <?php }?>
+      <td><a href="userObjective.php?objID=<?php echo $rows_array[$x][0]?>"><strong><?php echo $rows_array[$x][1]?></strong></a></td>
       <td><?php echo $rows_array[$x][2]?></td>
+      <td><?php echo $rows_array[$x][3]?></td>
     </tr>
     <?php } ?>
   <?php } 
     else { ?>
-    <h1 style = "text-align: center">You have no Objectives set.</h1>
+    <h1 style = "text-align: center">User has no objectives.</h1>
   <?php } ?>
   </table>
     <form  method="post">
-      <div>
-        <button class="w-20 btn btn-lg btn-primary" style="float:left;margin-top:20px" type="submit" name="submit" value="User Login">Create an Objective</button>
-      </div>
+      <button class="w-30 btn btn-lg btn-primary" style="margin-top:10px" type="submit" name="submit" value="User Login">Add Objective</button>
     </form>
 </main>
+    </div>
+
+
+
+
+
 
 
 

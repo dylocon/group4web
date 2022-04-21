@@ -1,6 +1,6 @@
 <?php
 include('/xampp/htdocs/groupfour-main/checkStatus.php');
-$db = new SQLite3('/xampp/Data/StudentModule.db');
+$db = new SQLite3('/xampp/Data/ActemiumDB.db');
 $stmt = $db->prepare('SELECT Role FROM User WHERE UserName = :username ');
 $stmt->bindParam(':username', $_SESSION['username'], SQLITE3_TEXT);
 $result = $stmt->execute();
@@ -39,33 +39,56 @@ else{
   <div style="text-align: center">
       <h1>Reviews</h1>
   </div>
+  
   <table style="width: 100%; text-align: center;border: solid 2px black">
-    <tr>
-      <th>ReviewID</th>
-      <th>AppraiseeID</th>
-      <th>AppraiserID</th>
-    </tr>
     <?php
     $userID = $_SESSION['userID'];
-    $db = new SQLite3('/xampp/Data/StudentModule.db');
-    $stmt = $db->prepare("SELECT ReviewID, AppraiseeID, AppraiserID FROM ReviewsQ WHERE AppraiseeID = $userID ");
+    $db = new SQLite3('/xampp/Data/ActemiumDB.db');
+    $stmt = $db->prepare("SELECT ReviewID,ReviewsQ.QuestionID, AppraiseeID, Appraisals.Name, User.firstName, User.lastName,Status,Date,DateDue  FROM ReviewsQ 
+    INNER JOIN Appraisals ON ReviewsQ.QuestionID = Appraisals.QuestionID 
+    INNER JOIN User ON ReviewsQ.AppraiserID = User.ID 
+    WHERE AppraiseeID = $userID");
     $result = $stmt->execute();
     $rows_array = [];
     $count = 0;
+
     while ($row=$result->fetchArray())
     {
       $count += 1;
       $rows_array[]=$row;
     }
-    ?>
+    
+   
+    ?> 
+    <?php if($count != 0){ ?>
+    <tr>
+      <th>ReviewID</th>
+      <th>Appraisal</th>
+      <th>Appraisee</th>
+      <th>Status</th>
+      <th>Date</th>
+      <th>Next Appraisal</th>
+    </tr>
+
+    <?php $_SESSION['reviewID'] =  $rows_array[0][0]; ?>
     <?php for($x = 0  ; $x < $count; $x+=1){?>
     <tr>
-      <td><a href="userAnswer.php"><?php echo $rows_array[$x][0]?></a></td>
-      <td><?php echo $rows_array[$x][1]?></td>
-      <td><?php echo $rows_array[$x][2]?></td>
+      <td><?php echo $rows_array[$x][0]?></td>
+      <td><a href="userAnswer.php?revieID=<?php echo $rows_array[$x][0]?>"><strong><?php echo $rows_array[$x][3]?></strong></a></td>
+      <td><?php echo $rows_array[$x][4]." ".$rows_array[$x][5]?></td>
+      <?php if($rows_array[$x][6] == "Incomplete") {?>
+      <td bgcolor="red"><?php echo $rows_array[$x][6]?></td>
+      <?php } else{ ?>
+        <td bgcolor="Green"><?php echo $rows_array[$x][6]?></td>
+      <?php } ?>
+      <td><?php echo $rows_array[$x][7]?></td>
+      <td><?php echo $rows_array[$x][8]?></td>
     </tr>
     <?php } ?>
-
+  <?php } 
+    else { ?>
+    <h1 style = "text-align: center">You have no reviews to Complete.</h1>
+  <?php } ?>
   </table>
 </main>
 

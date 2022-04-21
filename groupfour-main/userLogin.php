@@ -11,7 +11,7 @@ if (!isset($_POST['appID']) and !isset($_POST['lastname']) and !isset($_POST['po
     echo "Error";  // <-- return null;  
 }
 
-$db = new SQLite3('/xampp/Data/StudentModule.db');
+$db = new SQLite3('/xampp/Data/ActemiumDB.db');
 $stmt = $db->prepare('SELECT UserName, Password FROM User WHERE UserName = :username');
 $stmt->bindParam(':username', $_POST['username'], SQLITE3_TEXT);
 
@@ -37,9 +37,10 @@ if (isset($_POST['submit'])) {
                 exit();
             }
         }
-        else{
-            echo "Invalid credentials!";
         }
+        else{
+          $nameErr = "Please enter your Username correctly.";
+          $pwderr = "Please enter your Password correctly.";
     }
 }
 
@@ -73,20 +74,17 @@ if (isset($_POST['submit'])) {
     <div class="form-floating">
       <label for="floatingInput"class="loginFont"style="padding-right:100px">Username</label>
       <input type="text" placeholder="Username"class="inputFields" id="username" name="username" >
-      <span class="text-danger"><?php echo $errorappID; ?></span>
+      <br>
+      <span class="text-danger"><?php echo $nameErr; ?></span>
+      
     </div>
-<br>
     <div class="form-floating">
       <label for="floatingInput"class="loginFont"style="padding-right:108px">Password</label>
       <input type="password" placeholder="Password" class="inputFields"  id="password" name="password" >
-      <span class="text-danger"><?php echo $errorappID; ?></span>
+      <br>
+      <span class="text-danger"><?php echo $pwderr; ?></span>
     </div>
 
-    <!-- <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div> -->
     <br>
     <button class="w-50 btn btn-lg btn-primary" type="submit" name="submit" value="User Login">Sign in</button>
     <?php echo "$invalidMesg"?>

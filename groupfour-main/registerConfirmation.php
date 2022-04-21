@@ -1,28 +1,6 @@
 <?php
-include('checkStatus.php');
-$db = new SQLite3('/xampp/Data/ActemiumDB.db');
-$stmt = $db->prepare('SELECT Role, ID FROM User WHERE UserName = :username ');
-$stmt->bindParam(':username', $_SESSION['username'], SQLITE3_TEXT);
-$result = $stmt->execute();
-$rows_array = [];
-$_SESSION['questionsID'] = 1;
-while ($row=$result->fetchArray())
-{
-    $rows_array[]=$row;
-}
-if($rows_array[0][0] == "Admin")
-{
-    include('/xampp/htdocs/groupfour-main/admin/AdminNavBar.php');
-    $_SESSION['adminID'] = $rows_array[0][1];
-}
-else if($rows_array[0][0] == "Manager"){
-    include('/xampp/htdocs/groupfour-main/manager/ManagerNavBar.php');
-    $_SESSION['managerID'] = $rows_array[0][1];
-}
-else{
-    include('/xampp/htdocs/groupfour-main/user/UserNavBar.php');
-    $_SESSION['userID'] = $rows_array[0][1];
-}
+include("NavBar.php");
+session_start();
 ?>
 
 <!doctype html>
@@ -46,7 +24,8 @@ else{
   <form method="post">
     <h1 class="h3 mb-3 fw-normal" style="text-align: center">ACTEMIUM</h1>
 <div style="text-align: center">
-    <h1>You have successfully logged in.</h1>
+
+    <h1>Your Username to log in is: <?php echo $_SESSION['regUsername'] ?>.</h1>
 </div>
 
   </form>

@@ -25,13 +25,19 @@
 					<div class="defaultFont navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 						<ul class="navbar-nav flex-grow-1">
 							<li class="nav-item navFont">
-								<a class="nav-link defaultFont" href="/myproject/">
+								<a class="nav-link defaultFont" href="">
 									<img border="0" alt="User Icon" style = "padding-bottom:12px"src="/groupfour-main/Icons/actemium-logo.jpg" width="220" height="50">
 								</a>
 							</li>
+
+
 							<li class="nav-item navFont">
-								<a class="nav-link defaultFont" href="/groupfour-main/user/reviews.php">Reviews</a>
+								<a class="nav-link defaultFont" href="/groupfour-main/user/reviews.php">Appraisals</a>
 							</li>
+
+
+
+							
 							<li class="nav-item navFont">
 								<a class="nav-link  defaultFont" href="/groupfour-main/user/progress.php">Progress</a>
 							</li>
