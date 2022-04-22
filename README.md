@@ -1,3 +1,2 @@
 # groupfour
-RENAME THE GROUP4WEB FOLDER TO 'groupfour-main' FOR IT TO WORK
-https://www.w3schools.com/howto/howto_css_center-vertical.asp center login box 
+Please go to the 'Post Feedback Submission' patch, and then groupfour-main folder for the final project.
